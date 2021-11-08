@@ -1,8 +1,10 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from starlette.responses import RedirectResponse
 
 #intialize web app / pi
+from app.db import crud
+
 app = FastAPI()
 
 # Redirects base url to docs goto /redoc for fancy documentation 
@@ -12,9 +14,11 @@ def main():
 
 
 # GET request for Name Read name is passed in url rather than json 
-@app.get("/api/read/{name}", response_model=str)
-def get_name(name:str):
-    return name
+@app.post("/create/user", response_model=bool)
+def create_user(username: str = Body(..., min_length=1),
+                password: str = Body(..., min_length=6)):
+    crud.create_user(username=username, password=password)
+    return True
 
 
 if __name__ == "__main__":
