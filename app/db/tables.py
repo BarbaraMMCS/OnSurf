@@ -19,7 +19,7 @@ class UserTable(BaseModel):
 
     def save(self):
         with open("db/user.json", "w") as fp:
-            json.dump(self.json(), fp)
+            fp.write(self.json())
 
     def __iter__(self):
         return iter(self.__root__)
