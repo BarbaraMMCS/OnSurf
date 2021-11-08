@@ -1,5 +1,3 @@
-import hashlib
-
 from app.db.tables import User, USER_TABLE, Location
 from app.security.security import hash_password
 

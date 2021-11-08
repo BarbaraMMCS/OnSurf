@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Body, Depends
-from starlette.responses import RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from starlette.responses import RedirectResponse
 
 # intialize web app / pi
 from app.db import crud
