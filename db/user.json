@@ -1,1 +1,1 @@
-{"antoine": {"username": "antoine", "hash_password": "b9a246263f3a4b6e71936143fd47a320647ebc94e3a269b98a7d73a5ee5fecc6"}}
+{"antoine": {"username": "antoine", "hash_password": "b9a246263f3a4b6e71936143fd47a320647ebc94e3a269b98a7d73a5ee5fecc6", "locations": {"lux": {"latitude": 0.0, "longitude": 0.0, "name": null}}}, "barbara": {"username": "barbara", "hash_password": "1f0dea80a1af4eefa352c04bdaaa79f79433a7b458aaeaa927cb73ac9f63326a", "locations": {"lux": {"latitude": 0.0, "longitude": 0.0, "name": null}}}}
