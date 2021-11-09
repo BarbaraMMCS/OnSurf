@@ -1,3 +1,11 @@
+"""
+Date: 9 nov 2021
+Time: 9.45 am
+Author: Barbara Symeon
+Product name: OnSurf
+Product general description: This document is the main source file of the Small Proprietary Original Project OnSurf.
+File content description: This file is a security module, it checks the different passwords, and it hashes the password.
+"""
 import hashlib
 
 from fastapi import HTTPException

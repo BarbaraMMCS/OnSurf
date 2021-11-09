@@ -1,3 +1,13 @@
+"""
+Date: 9 nov 2021
+Time: 9.45 am
+Author: Barbara Symeon
+Product name: OnSurf
+Product general description: This document is the main source file of the Small Proprietary Original Project OnSurf.
+File content description: This file is composed of classes, These classes are BaseModels with pydantic to use object.
+For safety reasons it is easier to use a BaseModel than to check values from a dictionary.
+Theses classes limits the entries we can input in the SPOP database, which is a noSQL database
+"""
 from typing import Dict, Optional
 
 from fastapi import HTTPException

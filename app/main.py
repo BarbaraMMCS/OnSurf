@@ -1,3 +1,13 @@
+"""
+Date: 9 nov 2021
+Time: 9.45 am
+Author: Barbara Symeon
+Product name: OnSurf
+Product general description: This document is the main source file of the Small Proprietary Original Project OnSurf.
+File content description: This file defines the diferent Api's and starts the server.
+To Run the spop: python3 main.py
+"""
+
 import uvicorn
 from fastapi import FastAPI, Body, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -16,15 +26,14 @@ security = HTTPBasic()
 def main():
     return RedirectResponse(url="/docs")
 
-
-# GET request for Name Read name is passed in url rather than json 
+# endpoint to create a user
 @app.post("/create/user", response_model=bool)
 def create_user(username: str = Body(..., min_length=1),
                 password: str = Body(..., min_length=6)):
     crud.create_user(username=username, password=password)
     return True
 
-
+# endpoint to add a location for a user
 @app.post("/add/location", response_model=bool)
 def add_location(credentials: HTTPBasicCredentials = Depends(security),
                  longitude: float = Body(..., min=-180, max=180),
@@ -37,4 +46,5 @@ def add_location(credentials: HTTPBasicCredentials = Depends(security),
 
 
 if __name__ == "__main__":
+    # runs a local server
     uvicorn.run(app, host="0.0.0.0", port=8000)
