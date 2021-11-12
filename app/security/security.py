@@ -8,9 +8,6 @@ File content description: This file is a security module, it checks the differen
 """
 import hashlib
 
-from fastapi import HTTPException
-from starlette import status
-
 from app.db import crud
 
 
@@ -22,8 +19,4 @@ def verify_credentials(username: str, password: str):
     user = crud.get_user(username)
     if hash_password(password) == user.hash_password:
         return True
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Incorrect username or password",
-        headers={"WWW-Authenticate": "Basic"},
-    )
+    print(f"Incorrect username or password")
