@@ -16,7 +16,7 @@ class UserTable(BaseModel):
         self.save()
 
     def save(self):
-        with open("user.json", "w") as fp:
+        with open("db/user.json", "w") as fp:
             fp.write(self.json())
 
     def delete(self, username: str) -> bool:

@@ -112,7 +112,7 @@ def user_menu(command: str) -> None:
 
 
 CURRENT_USER: Optional[User] = None
-USER_TABLE = UserTable.parse_file("user.json")
+USER_TABLE = UserTable.parse_file("db/user.json")
 
 if __name__ == "__main__":
     runOnSurf()
