@@ -7,232 +7,112 @@ Product general description: This document is the main source file of the Small 
 File content description: This file the main file of the project
 it contains classes and interfaces
 """
-
+import hashlib
 from datetime import datetime
-from enum import Enum
-from typing import Dict, Union, Optional
+from typing import Optional
 
-from pydantic import BaseModel, Field
-
-from app.db.tables import USER_TABLE
-from app.security.security import hash_password
-
-
-class CoordinatesGPS(BaseModel):
-    longitude: float = Field(..., gt=0, le=10)
-    latitude: float = Field(..., gt=0, le=10)
+from app.DataModels import Location, CoordinatesGPS
+from app.User import User
+from app.UserTable import UserTable
+from app.print_service import print_OnSurf, print_welcome_menu, print_admin_menu, print_base_user_menu, print_user_menu
 
 
-class Location(BaseModel):
-    location: str
-    coordinates: Optional[CoordinatesGPS]
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode('UTF-8')).hexdigest()
 
 
-class CompassPoints(str, Enum):
-    N = 'N'
-    NE = 'NE'
-    E = 'E'
-    SE = 'SE'
-    S = 'S'
-    SW = 'SW'
-    W = 'W'
-    NW = 'NW'
-
-
-class Weather(BaseModel):
-    WindDirection: CompassPoints
-    WindSpeed: int
-    WaveDirection: CompassPoints
-    WaveSize: float
-    HighTide: datetime.time
-
-
-class WeatherDatabase(BaseModel):
-    locations: Dict[str, Weather] = {}
-
-
-class UserTable(BaseModel):
-    __root__: Dict[str, User]
-
-    def add(self, user: User):
-        if user.username in self.__root__:
-            print(f"{user.username} already exists")
-        self.__root__[user.username] = user
-
-    def save(self):
-        with open("db/user.json", "w") as fp:
-            fp.write(self.json())
-
-    def __iter__(self):
-        return iter(self.__root__)
-
-    def __getitem__(self, username: str):
-        if username not in self.__root__:
-            print(f"{username} does not exists")
-        return self.__root__[username]
-
-
-class Authenticated(BaseModel):
-    @staticmethod
-    def oe_login(self, login: str, password: str) -> bool:
+def login(username: str, password: str) -> bool:
+    global CURRENT_USER
+    user = USER_TABLE[username]
+    if user.hash_password == hash_password(password):
+        CURRENT_USER = user
         return True
-
-    @staticmethod
-    def oe_logout(self) -> bool:
-        return True
-
-    @staticmethod
-    def ie_message(self, message: str) -> bool:
-        return True
-
-
-class User:
-    username: str
-    hash_password: str
-    locations: WeatherDatabase
-
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def oe_create_user(login: str, password: str) -> bool:
-        user = User(username=login, hash_password=hash_password(password))
-        USER_TABLE.add(user)
-        USER_TABLE.save()
-        return True
-
-    def oe_add_surf_location(self, location: Location) -> bool:
-        if location in self.locations:
-            print(f"{location} already exists")
-        self.locations[location] = location
-        return True
-
-    @staticmethod
-    def oe_get_weather(self, time: datetime.time, date: datetime.date) -> bool:
-        return True
-
-    @staticmethod
-    def oe_ask_on_surf_the_best_spot(self) -> bool:
-        return True
-
-    @staticmethod
-    def oe_remove_surf_location(self, location: Union[CoordinatesGPS, str]) -> bool:
-        return True
-
-    @staticmethod
-    def ie_user_created(self) -> bool:
-        return True
-
-    @staticmethod
-    def ie_surf_location_added(self) -> bool:
-        return True
-
-    @staticmethod
-    def ie_weather_report(self, location: Location, wind_direction: CompassPoints, wind_speed: int,
-                          wave_direction: CompassPoints, wave_size: float, high_tide: datetime.time) -> bool:
-        return True
-
-    @staticmethod
-    def ie_the_best_surf_spot(self, location: Location) -> bool:
-        return True
-
-    @staticmethod
-    def ie_surf_location_emoved(self) -> bool:
-        return True
-
-
-class Administrator:
-    @staticmethod
-    def oe_delete_user(self, user: str) -> bool:
-        return True
-
-    @staticmethod
-    def ie_user_deleted(self) -> bool:
-        return True
-
-
-class Creator:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def oe_install_system(self) -> bool:
-        return True
-
-    @staticmethod
-    def oe_import_database(self, database: WeatherDatabase) -> bool:
-        return True
-
-    @staticmethod
-    def ie_database_imported(self) -> bool:
-        return True
-
-
-def admin_menu(command: str) -> None:
-    if command == "delete user":
-        Administrator.oe_delete_user()
-    if command == "install system":
-        Creator.oe_install_system()
-    if command == "import database":
-        Creator.oe_import_database()
-
-
-def menu(command: str) -> None:
-    if command == "create user":
-        User.oe_create_user()
-    if command == "add location":
-        User.oe_add_surf_location()
-    if command == "remove location":
-        User.oe_remove_surf_location()
-    if command == "get weather":
-        User.oe_get_weather()
-    if command == "the best spot":
-        User.oe_ask_on_surf_the_best_spot()
-
-
-def menu_authenticate(command: str) -> bool:
-    logged = False
-    if command == "login":
-        logged = Authenticated.oe_login()
-    if command == "logout":
-        logged = Authenticated.oe_logout()
-    return logged
-
-
-def is_admin() -> bool:
     return False
+
+
+def logout() -> bool:
+    global CURRENT_USER
+    CURRENT_USER = None
+    return True
 
 
 def runOnSurf():
     is_on = True
+    print_OnSurf()
+    print_welcome_menu()
     while is_on:
-
-        command = str(input("--Welcome to OnSurf--"))
-
-        if command == ("q" | "quit"):
+        command = str(input("Press any key to see MENU or command >"))
+        if command in {"q", "quit"}:
             is_on = False
             continue
 
-        logged = menu_authenticate(command)
-        while logged:
-            if is_admin():
+        if CURRENT_USER is None:
+            print_welcome_menu()
+            welcome_menu(command)
+        else:
+            if CURRENT_USER.is_admin:
+                print_admin_menu()
                 admin_menu(command)
-            else:
-                menu(command)
+            elif not CURRENT_USER.is_admin:
+                print_base_user_menu()
+                base_user_menu(command)
+            print_user_menu()
+            user_menu(command)
 
 
-from typing import Optional
-
-from pydantic import BaseModel
-
-
-class Location(BaseModel):
-    latitude: float
-    longitude: float
-    name: Optional[str]
+def oe_delete_user(username: str) -> bool:
+    return USER_TABLE.delete(username)
 
 
-USER_TABLE = UserTable.parse_file("db/user.json")
+def oe_create_base_user(username: str, password: str) -> bool:
+    user = User(username=username, hash_password=hash_password(password))
+    USER_TABLE.add(user)
+    return True
+
+
+def admin_menu(command: str) -> None:
+    if command == "delete user":
+        oe_delete_user(input("The username >"))
+
+
+def welcome_menu(command: str) -> None:
+    if command == "login":
+        login(input("Your username >"), input("Your password >"))
+    elif command == "create user":
+        oe_create_base_user(input("Your username >"), input("Your password >"))
+
+
+def base_user_menu(command: str) -> None:
+    if command == "add location":
+        location = Location(location_name=input("Location name >"),
+                            coordinates=CoordinatesGPS(
+                                latitude=float(input("latitude [-90, 90] > ")),
+                                longitude=float(input("longitude [-180, 180] > "))
+                            ))
+        CURRENT_USER.oe_add_surf_location(location)
+        USER_TABLE.save()
+    if command == "remove location":
+        location_name = input("Location name >")
+        CURRENT_USER.oe_remove_surf_location(location_name)
+        USER_TABLE.save()
+    if command == "display userspace":
+        CURRENT_USER.oe_display_userspace()
+    if command == "get weather":
+        now = datetime.now()
+        time = datetime(now.year, now.month, int(input("2021-11-day, day >")), int(input("24h format hour >")))
+        CURRENT_USER.oe_get_weather(time)
+        USER_TABLE.save()
+    if command == "best surf spot":
+        CURRENT_USER.oe_ask_on_surf_the_best_spot()
+
+
+def user_menu(command: str) -> None:
+    if command == "logout":
+        logout()
+
+
+CURRENT_USER: Optional[User] = None
+USER_TABLE = UserTable.parse_file("user.json")
 
 if __name__ == "__main__":
     runOnSurf()
