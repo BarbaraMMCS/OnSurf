@@ -42,10 +42,8 @@ class WeatherReport(BaseModel):
     timestamp: float
 
     def __str__(self):
-        return ("-" * 51 + "\n"
-               f"Weather report: {datetime.datetime.fromtimestamp(self.timestamp).strftime('%A - %d %B %Y - %HH')}\n"
-               f"Waves: {abs(self.waves_height):.2f}{self.waves_height_unit}"
+        return (f"    Weather report: {datetime.datetime.fromtimestamp(self.timestamp).strftime('%A - %d %B %Y - %HH')}\n"
+               f"        Waves: {abs(self.waves_height):.2f}{self.waves_height_unit}"
                f" - {abs(self.waves_direction):.2f}{self.waves_direction_unit}\n"
-               f"Wind: {abs(self.wind_u):.2f}{self.wind_u_unit}"
-               f" - {abs(self.wind_v):.2f}{self.wind_v_unit}\n"
-               + "-" * 51)
+               f"        Wind: {abs(self.wind_u):.2f}{self.wind_u_unit}"
+               f" - {abs(self.wind_v):.2f}{self.wind_v_unit}\n")

@@ -6,7 +6,7 @@ import requests
 from pydantic import BaseModel
 
 from app.DataModels import Location, WeatherReport
-from app.print_service import print_userspace
+from app.print_service import print_userspace, print_line
 
 
 class User(BaseModel):
@@ -30,6 +30,7 @@ class User(BaseModel):
     def oe_display_userspace(self) -> bool:
         print_userspace()
         for location in self.locations.values():
+            print_line("_")
             print(f"{location}")
             print(f"{self.weather_reports.get(location.location_name, '')}\n")
         return True
@@ -67,5 +68,7 @@ class User(BaseModel):
 
     def oe_ask_on_surf_the_best_spot(self) -> bool:
         location_name = random.choice(list(self.locations.keys()))
-        print("-" * 51 + f"\nThe best spot to go surfing:\n{self.locations[location_name]}\n" + "-" * 51 )
+        print_line("*")
+        print(f"\nThe best spot to go surfing:\n{self.locations[location_name]}\n")
+        print_line("*")
         return True
