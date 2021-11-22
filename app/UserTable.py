@@ -1,4 +1,24 @@
-from typing import Dict, Union
+"""
+Date: 22 nov 2021
+Time: 09.45
+Author: Barbara Symeon
+Product name: OnSurf
+Product general description: This document is part of the source files of the Small Proprietary Original Project OnSurf.
+File content description: This file a class file of the project.
+
+This file contains the class UserTable which inherits from the class BaseModel from the Pydantic library.
+Defining a base model for UserTable allows to pass data to the object
+and ensure all fields will conform to types defined in the model.
+
+The program needs to iterate over the object UserTable's keys that do not exists yet.
+These are username attributes from the object User.
+Hence, the variable __root__ is used.
+__root__ will function with any dictionary which contains User objects with an attribute of type strings as key in UserTable.
+The class also contains methods to add and delete users to the object UserTable
+As well as one method to save the object's state as a json object.
+Lastly, base functions __iter__ and __getitem__ have been overwritten.
+"""
+from typing import Dict
 
 from pydantic import BaseModel
 

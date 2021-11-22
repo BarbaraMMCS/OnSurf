@@ -1,11 +1,17 @@
 """
-Date: 12 nov 2021
-Time: 22.45
+Date: 22 nov 2021
+Time: 09.45
 Author: Barbara Symeon
 Product name: OnSurf
-Product general description: This document is the main source file of the Small Proprietary Original Project OnSurf.
-File content description: This file the main file of the project
-it contains classes and interfaces
+Product general description: This document is one of the main source files of the Small Proprietary Original Project OnSurf.
+File content description: This file is the main source file of the project.
+
+This file contains the main functionalities to run OnSurf: run_on_surf, which is the main program loop.
+Then this file has the user functions: login, logout, hash_password, create and delete user.
+As well as welcome_menu, admin_menu, base_user_menu and user_menu.
+We have the object USER_TABLE in this file. It is an object from the class UserTable.
+USER_TABLE is an object needed to store a user's credentials, userspace and weather reports.
+Lastly, we have a variable CURRENT_USER that is needed to log as a user or an admin.
 """
 import hashlib
 from datetime import datetime
@@ -36,7 +42,7 @@ def logout() -> bool:
     return True
 
 
-def runOnSurf():
+def run_on_surf():
     is_on = True
     print_OnSurf()
     print_welcome_menu()
@@ -89,21 +95,21 @@ def base_user_menu(command: str) -> None:
                                 latitude=float(input("latitude [-90, 90] > ")),
                                 longitude=float(input("longitude [-180, 180] > "))
                             ))
-        CURRENT_USER.oe_add_surf_location(location)
+        CURRENT_USER.add_surf_location(location)
         USER_TABLE.save()
     if command == "remove location":
         location_name = input("Location name >")
-        CURRENT_USER.oe_remove_surf_location(location_name)
+        CURRENT_USER.remove_surf_location(location_name)
         USER_TABLE.save()
     if command == "display userspace":
-        CURRENT_USER.oe_display_userspace()
+        CURRENT_USER.display_userspace()
     if command == "get weather":
         now = datetime.now()
         time = datetime(now.year, now.month, int(input("2021-11-day, day >")), int(input("24h format hour >")))
-        CURRENT_USER.oe_get_weather(time)
+        CURRENT_USER.get_weather(time)
         USER_TABLE.save()
     if command == "best surf spot":
-        CURRENT_USER.oe_ask_on_surf_the_best_spot()
+        CURRENT_USER.ask_on_surf_the_best_spot()
 
 
 def user_menu(command: str) -> None:
@@ -115,4 +121,4 @@ CURRENT_USER: Optional[User] = None
 USER_TABLE = UserTable.parse_file("db/user.json")
 
 if __name__ == "__main__":
-    runOnSurf()
+    run_on_surf()

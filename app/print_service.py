@@ -1,3 +1,14 @@
+"""
+Date: 22 nov 2021
+Time: 09.45
+Author: Barbara Symeon
+Product name: OnSurf
+Product general description: This document is part of the source files of the Small Proprietary Original Project OnSurf.
+File content description: This file the print service file of the project.
+
+This file contains functions that prints menus and welcome messages to the terminal.
+"""
+
 def print_line(char: str = "-") -> None:
     print(char * 61)
 
