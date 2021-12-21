@@ -5,7 +5,7 @@ from app.User import User
 
 
 class TestUser:
-    def (self):
+    def test_add_surf_location(self):
         user = User(username="username", hash_password="hash_password")
         location = Location(location_name="location_name", coordinates=CoordinatesGPS(longitude=0, latitude=0))
         assert location.location_name not in user.locations
