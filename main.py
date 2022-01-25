@@ -3,14 +3,18 @@ Date: 22 nov 2021
 Time: 09.45
 Author: Barbara Symeon
 Product name: OnSurf
-Product general description: This document is one of the main source files of the Small Proprietary Original Project OnSurf.
+Product general description: This document is one of the main source files of
+the Small Proprietary Original Project OnSurf.
 File content description: This file is the main source file of the project.
 
-This file contains the main functionalities to run OnSurf: run_on_surf, which is the main program loop.
-Then this file has the user functions: login, logout, hash_password, create and delete user.
+This file contains the main functionalities to run OnSurf: run_on_surf, which is
+the main program loop.
+Then this file has the user functions: login, logout, hash_password, create
+and delete user.
 As well as welcome_menu, admin_menu, base_user_menu and user_menu.
 We have the object USER_TABLE in this file. It is an object from the class UserTable.
-USER_TABLE is an object needed to store a user's credentials, userspace and weather reports.
+USER_TABLE is an object needed to store a user's credentials, userspace
+and weather reports.
 Lastly, we have a variable CURRENT_USER that is needed to log as a user or an admin.
 """
 import hashlib
@@ -20,7 +24,8 @@ from typing import Optional
 from app.DataModels import Location, CoordinatesGPS
 from app.User import User
 from app.UserTable import UserTable
-from app.print_service import print_OnSurf, print_welcome_menu, print_admin_menu, print_base_user_menu, print_user_menu
+from app.print_service import print_OnSurf, print_welcome_menu, print_admin_menu, \
+    print_base_user_menu, print_user_menu
 
 
 def hash_password(password: str) -> str:
@@ -105,7 +110,8 @@ def base_user_menu(command: str) -> None:
         CURRENT_USER.display_userspace()
     if command == "get weather":
         now = datetime.now()
-        time = datetime(now.year, now.month, int(input("2021-11-day, day >")), int(input("24h format hour >")))
+        time = datetime(now.year, now.month, int(input("2021-11-day, day >")),
+                        int(input("24h format hour >")))
         CURRENT_USER.get_weather(time)
         USER_TABLE.save()
     if command == "best surf spot":

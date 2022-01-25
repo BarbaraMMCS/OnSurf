@@ -3,11 +3,13 @@ Date: 22 nov 2021
 Time: 09.45
 Author: Barbara Symeon
 Product name: OnSurf
-Product general description: This document is part of the source files of the Small Proprietary Original Project OnSurf.
+Product general description: This document is part of the source files
+of the Small Proprietary Original Project OnSurf.
 File content description: This file is a test file of the project.
 
-This file contains the class TestUser which performs tests on SPOP main functions: add_surf_location,
-remove_surf_location, get_weather and ask_on_surf_the_best_spot.
+This file contains the class TestUser which performs tests
+on SPOP main functions: add_surf_location, remove_surf_location,
+get_weather and ask_on_surf_the_best_spot.
 """
 
 import datetime
@@ -21,7 +23,8 @@ class TestUser:
     def test_add_surf_location(self):
         test_file.write("\ntest_add_surf_location\n")
         user = User(username="username", hash_password="hash_password")
-        location = Location(location_name="location_name", coordinates=CoordinatesGPS(longitude=0, latitude=0))
+        location = Location(location_name="location_name",
+                            coordinates=CoordinatesGPS(longitude=0, latitude=0))
         assert location.location_name not in user.locations
         result = user.add_surf_location(location)
         assert result
@@ -29,12 +32,14 @@ class TestUser:
         assert location.location_name in user.locations
         test_file.write(f"location.location_name in user.locations PASSED\n")
         assert user.locations[location.location_name] == location
-        test_file.write(f"{user.locations[location.location_name]} == {location} PASSED\n")
+        test_file.write(f"{user.locations[location.location_name]} == "
+                        f"{location} PASSED\n")
 
     def test_remove_surf_location(self):
         test_file.write("\ntest_remove_surf_location\n")
         user = User(username="username", hash_password="hash_password")
-        location = Location(location_name="location_name", coordinates=CoordinatesGPS(longitude=0, latitude=0))
+        location = Location(location_name="location_name",
+                            coordinates=CoordinatesGPS(longitude=0, latitude=0))
         user.add_surf_location(location)
         assert location.location_name in user.locations
         result = user.remove_surf_location(location.location_name)
@@ -48,7 +53,8 @@ class TestUser:
     def test_get_weather(self):
         test_file.write("\ntest_get_weather\n")
         user = User(username="username", hash_password="hash_password")
-        location = Location(location_name="location_name", coordinates=CoordinatesGPS(longitude=0, latitude=0))
+        location = Location(location_name="location_name",
+                            coordinates=CoordinatesGPS(longitude=0, latitude=0))
         user.add_surf_location(location)
         assert location.location_name not in user.weather_reports
         result = user.get_weather(datetime.datetime.now())
@@ -62,7 +68,8 @@ class TestUser:
         test_file.write("\ntest_ask_on_surf_the_best_spot\n")
 
         user = User(username="username", hash_password="hash_password")
-        location = Location(location_name="location_name", coordinates=CoordinatesGPS(longitude=0, latitude=0))
+        location = Location(location_name="location_name",
+                            coordinates=CoordinatesGPS(longitude=0, latitude=0))
         user.add_surf_location(location)
         result = user.ask_on_surf_the_best_spot()
         test_file.write(f"{user.ask_on_surf_the_best_spot()} PASSED\n")
