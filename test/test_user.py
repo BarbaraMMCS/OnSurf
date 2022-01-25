@@ -1,3 +1,15 @@
+"""
+Date: 22 nov 2021
+Time: 09.45
+Author: Barbara Symeon
+Product name: OnSurf
+Product general description: This document is part of the source files of the Small Proprietary Original Project OnSurf.
+File content description: This file is a class file of the project.
+
+This file contains the class TestUser which performs tests on SPOP main functions: add_surf_location,
+remove_surf_location, get_weather and ask_on_surf_the_best_spot.
+"""
+
 import datetime
 
 from app.DataModels import Location, CoordinatesGPS

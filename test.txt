@@ -1,13 +1,3 @@
-(venv) ➜  OnSurf git:(main) ✗ pytest test --html=report.html
-=================================================================== test session starts ===================================================================
-platform darwin -- Python 3.8.12, pytest-6.2.5, py-1.11.0, pluggy-1.0.0
-rootdir: /Users/barbara/Desktop/OnSurf
-plugins: html-3.1.1, metadata-1.11.0
-collected 4 items
-
-test/test_user.py ....                                                                                                                              [100%]
-
------------------------------------------- generated html file: file:///Users/barbara/Desktop/OnSurf/report.html
 
 test_add_surf_location
 True PASSED
